@@ -1,0 +1,32 @@
+# IdeaGraph Backend
+
+## Overview
+This is the FastAPI backend for **IdeaGraph: The Autonomous Architect**, a system that leverages AI to generate and manage architectural graphs for software projects.
+
+## Features
+- **AI-Powered Graph Generation**: Integrates Groq's llama-3.3-70b-versatile model to create JSON graphs with nodes and edges based on user prompts.
+- **Tech Stack Validation**: Includes a "Hallucination Guard" that validates technology stack pairings to ensure compatibility.
+- **Graph Management**: Supports creating, forking, and exporting graphs.
+- **Database Integration**: Uses TiDB Cloud (MySQL) via SQLAlchemy with async sessions. All tables use VARCHAR(36) primary keys and SSL connection using `./certs/tidb-ca.pem`.
+- **CORS Enabled**: Allows cross-origin requests from any origin for frontend integration.
+- **Asynchronous Operations**: All endpoints and services use async/await for performance.
+
+## API Endpoints
+- `POST /api/v1/graph/generate`: Generate a new graph from a prompt using Groq.
+- `POST /api/v1/graph/fork/{graph_id}`: Fork an existing graph with new UUIDs.
+- `GET /api/v1/graph/export-vibe/{node_id}`: Export a node as a high-quality Markdown prompt for Vibe-Coding.
+
+## Setup
+1. Install dependencies: `pip install -r requirements.txt`
+2. Set environment variables: `GROQ_API_KEY`
+3. Run: `python main.py`
+
+## Architecture
+- **main.py**: FastAPI application entry point with CORS middleware, lifespan events for Groq client, and async database initialization.
+- **core/config.py**: Configuration settings including TiDB Cloud URL and Groq API key.
+- **database.py**: Async SQLAlchemy engine/session configured for TiDB Cloud with SSL certificate.
+- **models.py**: SQLAlchemy table definitions for Graph, Node, and Edge enforcing UUID primary keys and cascade deletes.
+- **schemas.py**: Pydantic models for Graph, Node, and Edge with UUID defaults.
+- **services/groq_service.py**: Groq AI integration for graph generation (uses hardcoded API key).
+- **services/hallucination_guard.py**: Tech stack validation logic with compatibility matrix.
+- **api/v1/endpoints/graph.py**: Asynchronous API endpoints with full CRUD logic.

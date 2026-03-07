@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ceramic-base: #f5f5f0;
+  --cloud-accent: #4a90e2;
+}
+
+@layer base {
+  body {
+    /* A calm, warm beige background */
+    @apply bg-ceramic-base text-ink-dark antialiased;
+    margin: 0;
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* The core Glassmorphism panel for light theme */
+  .glass-panel-light {
+    @apply bg-white/40 backdrop-blur-2xl border border-white/60 shadow-glass-depth;
+  }
+
+  /* Slow, subtle entry animation utility */
+  .scale-in-slow {
+    animation: scaleInSlow 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+}
+
+@keyframes scaleInSlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Elegant, minimal scrollbar for light theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-ceramic-dark border-2 border-ceramic-base rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-cloud-accent;
+}
+
+/* React Flow Overrides - Soft, physical-looking handles */
+.react-flow__handle {
+  width: 12px !important;
+  height: 12px !important;
+  @apply !bg-ceramic-base !border-2 !border-cloud-accent !shadow-skeuo-outer !rounded-full;
+}
+
+/* Controls panel for the canvas - Raised tactile panel */
+.react-flow__controls {
+  @apply !bg-ceramic-base !border-white !rounded-xl !shadow-skeuo-outer !transition-all !duration-300;
+}
+
+.react-flow__controls-button {
+  @apply !border-b-ceramic-dark !fill-ink-muted hover:!fill-cloud-accent transition-colors;
+}
